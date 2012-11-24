@@ -10,9 +10,9 @@ SOURCES=App.cpp MotorDisplay.cpp SimulationData.cpp SimulationWindow.cpp Simulat
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
 
-App:  $(OBJECTS)
-	g++ -o $@ $(WX_LDFLAGS) $^
+testharness.a:  $(OBJECTS)
+	ar r $@ $^
 
 obj/%.o: %.cpp
-	g++ $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -I ./Simulator -Wall -o "$@" -c "$<"
+	g++ $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" -c "$<"
 
