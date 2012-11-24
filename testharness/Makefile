@@ -10,7 +10,7 @@ SOURCES=App.cpp MotorDisplay.cpp SimulationData.cpp SimulationWindow.cpp Simulat
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
 
-testharness.a:  $(OBJECTS)
+obj/testharness.a:  $(OBJECTS)
 	ar r $@ $^
 
 obj/%.o: %.cpp
