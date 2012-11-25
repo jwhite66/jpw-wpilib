@@ -1,17 +1,17 @@
 SRC_DIR=..
-WPI_DIR=../rbmj-wpilib/
-WX_CFLAGS=`wx-config --cxxflags`
+WPI_DIR=.
 HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/vxsim/basetsd.h -include $(SRC_DIR)/vxsim/hack.h
 WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication
 
-SOURCES=App.cpp MotorDisplay.cpp SimulationData.cpp SimulationWindow.cpp Simulator.cpp Slider.cpp TogglePanelButton.cpp
+SOURCES=\
+    semLib.cpp taskLib.cpp
 
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
 
-obj/testharness.a:  $(OBJECTS)
+obj/vxsim.a:  $(OBJECTS)
 	ar r $@ $^
 
 obj/%.o: %.cpp
-	g++ $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" -c "$<"
+	g++ $(WPI_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
 
