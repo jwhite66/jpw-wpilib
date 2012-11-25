@@ -128,6 +128,7 @@ static void wpiCleanTracePrint(INSTR *caller, INT32 func, INT32 nargs, INT32 *ar
 	printf(buf);
 }
 
+#if defined(JPW_NOT_TOO_TIRED_TO_IMPLEMENT)
 extern "C"
 {
 	extern void trcStack(REG_SET* pRegs, FUNCPTR printRtn, INT32 tid);
@@ -159,6 +160,7 @@ void wpi_selfTrace()
 	// Task to be traced must be suspended for the stack trace to work.
 	taskSuspend(0);
 }
+#endif
 
 static bool stackTraceEnabled = false;
 static bool suspendOnAssertEnabled = false;
