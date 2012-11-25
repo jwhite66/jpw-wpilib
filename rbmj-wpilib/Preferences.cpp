@@ -12,6 +12,7 @@
 #include "WPIErrors.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /** Private NI function needed to write to the VxWorks target */
