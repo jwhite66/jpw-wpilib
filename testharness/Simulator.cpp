@@ -29,6 +29,7 @@
 #include <PWM.h>
 
 #include <RobotBase.h>
+extern RobotBase * FRC_userClassFactory();
 
 #include <vector>
 using namespace std;
@@ -56,7 +57,7 @@ void Simulator::StartSimulation(ControlInterface * controlInterface)
 
 #if ! defined(STANDALONE)
 	// begin the simulation by calling into the user's code
-	RobotBase::startRobotTask(NULL);
+	RobotBase::startRobotTask((FUNCPTR) FRC_userClassFactory);
 #endif
 	
 	// and then delete self when done
