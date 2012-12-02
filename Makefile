@@ -6,7 +6,7 @@ HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/
 WPI_CFLAGS=-I $(WPI_DIR)
 
 MyRobot:  $(OBJ_DIR)/MyRobot.o $(WPI_DIR)/obj/wpilib.a vxsim/obj/vxsim.a testharness/obj/testharness.a
-	g++ -g $(WX_LDFLAGS) -o $@ $^ 2>&1 | tee link.out
+	g++ -g -m32 $(WX_LDFLAGS) -o $@ $^ 2>&1
 
 $(OBJ_DIR)/MyRobot.o : MyRobot.cpp Makefile
 	g++ -g -fpermissive $(WPI_CFLAGS) $(HACK_INCLUDES) -I $(SRC_DIR) -Wall -o "$@" -c "$<"

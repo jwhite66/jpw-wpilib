@@ -13,5 +13,5 @@ obj/vxsim.a:  $(OBJECTS)
 	ar r $@ $^
 
 obj/%.o: %.cpp
-	g++ -g $(WPI_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
+	g++ -g -m32 $(WPI_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
 
