@@ -1,11 +1,23 @@
 #include "taskLib.h"
+#include "sysLib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
 
 STATUS taskDelay(int ticks)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
+    struct timespec tv;
+    if (ticks == 0)
+    {
+        sched_yield();
+        return OK;
+    }
+    tv.tv_sec = 0;
+    tv.tv_nsec = 1000000000L / sysClkRateGet();
+    if (nanosleep(&tv, NULL) == 0)
+        return OK;
+
     return ERROR;
 }
 
