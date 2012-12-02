@@ -10,8 +10,3 @@ MyRobot:  $(OBJ_DIR)/MyRobot.o $(WPI_DIR)/obj/wpilib.a vxsim/obj/vxsim.a testhar
 
 $(OBJ_DIR)/MyRobot.o : MyRobot.cpp Makefile
 	g++ -fpermissive $(WPI_CFLAGS) $(HACK_INCLUDES) -I $(SRC_DIR) -Wall -o "$@" -c "$<"
-
-work.list: link.out
-	grep 'undefined refer' link.out | sed 's/^.*`//' | sort | uniq -c | sort -n  >work.list
-
-
