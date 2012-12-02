@@ -196,8 +196,10 @@ extern "C"
  * This is lower overhead than GetFPGATimestamp() but not synchronized with other FPGA timestamps.
  * @returns Robot running time in seconds.
  */
+#if ! defined(DISABLE_GETPPCTIMESTAMP)
 double Timer::GetPPCTimestamp()
 {
 	// PPC system clock is 33MHz
 	return niTimestamp64() / 33.0e6;
 }
+#endif

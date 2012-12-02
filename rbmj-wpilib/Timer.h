@@ -36,7 +36,9 @@ public:
 	bool HasPeriodPassed(double period);
 
 	static double GetFPGATimestamp();
+#if ! defined(DISABLE_GETPPCTIMESTAMP)
 	static double GetPPCTimestamp();
+#endif
 
 private:
 	double m_startTime;
