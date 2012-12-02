@@ -54,10 +54,13 @@ void Simulator::StartSimulation(ControlInterface * controlInterface)
 	
 	// create the simulator
 	Simulator::m_instance = new Simulator(controlInterface);
+
+#if ! defined(STANDALONE)
 	StartRobotClass();
 		
 	// begin the simulation by calling into the user's code
 	RobotBase::startRobotTask(NULL);
+#endif
 	
 	// and then delete self when done
 	delete Simulator::m_instance;
