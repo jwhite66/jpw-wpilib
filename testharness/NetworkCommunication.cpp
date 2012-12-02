@@ -1,5 +1,6 @@
 #include "AICalibration.h"
 #include "FRCComm.h"
+#include "LoadOut.h"
 #include <stdio.h>
 #include "symModuleLink.h"
 
@@ -72,3 +73,10 @@ STATUS moduleNameFindBySymbolName(const char * symbol,char *module)
     fprintf(stderr, "%s UNIMPLEMENTED\n", __FUNCTION__);
     return ERROR;
 }
+
+bool nLoadOut::getModulePresence(tModuleType moduleType, UINT8 moduleNumber)
+{
+    fprintf(stderr, "%s UNIMPLEMENTED\n", __FUNCTION__);
+    return 0;
+}
+
