@@ -14,6 +14,12 @@ STATUS taskSuspend(int tid)
     return ERROR;
 }
 
+int taskNameToId (char * name)
+{
+    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
+    return 0;
+}
+
 int taskSpawn(char *name, int priority, int options,
               int stackSize, FUNCPTR entryPt,
               int arg1, int arg2, int arg3, int arg4, int arg5,
