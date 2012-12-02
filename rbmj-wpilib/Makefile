@@ -1,6 +1,7 @@
 SRC_DIR=..
 WPI_DIR=.
 HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/vxsim/basetsd.h -include $(SRC_DIR)/vxsim/hack.h
+HACK_CFLAGS=-DDISABLE_STACK_TRACE
 WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication
 
 SOURCES=\
@@ -70,5 +71,5 @@ obj/wpilib.a:  $(OBJECTS)
 	ar r $@ $^
 
 obj/%.o: %.cpp
-	g++ $(WPI_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
+	g++ $(WPI_CFLAGS) $(HACK_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
 

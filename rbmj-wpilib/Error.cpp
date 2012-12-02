@@ -104,11 +104,13 @@ void Error::Report()
 
 	delete [] error;
 
+#if ! defined(DISABLE_STACK_TRACE)
 	if (m_stackTraceEnabled)
 	{
 		printf("-----------<Stack Trace>----------------\n");
 		wpi_selfTrace();
 	}
+#endif
 }
 
 void Error::Clear()
