@@ -4,7 +4,7 @@ HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/
 WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication
 
 SOURCES=\
-    semLib.cpp assert.cpp moduleLib.cpp taskLib.cpp unldLib.cpp
+    semLib.cpp assert.cpp moduleLib.cpp nivision.cpp taskLib.cpp timer.cpp unldLib.cpp
 
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
