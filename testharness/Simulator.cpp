@@ -29,7 +29,6 @@
 #include <PWM.h>
 
 #include <RobotBase.h>
-void StartRobotClass();
 
 #include <vector>
 using namespace std;
@@ -56,8 +55,6 @@ void Simulator::StartSimulation(ControlInterface * controlInterface)
 	Simulator::m_instance = new Simulator(controlInterface);
 
 #if ! defined(STANDALONE)
-	StartRobotClass();
-		
 	// begin the simulation by calling into the user's code
 	RobotBase::startRobotTask(NULL);
 #endif
