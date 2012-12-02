@@ -2,10 +2,10 @@ SRC_DIR=..
 WPI_DIR=../rbmj-wpilib/
 WX_CFLAGS=`wx-config --cxxflags`
 HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/vxsim/basetsd.h -include $(SRC_DIR)/vxsim/hack.h
-WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication
+WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication -I $(WPI_DIR)/ChipObject
 WX_LDFLAGS=`wx-config --libs`
 
-SOURCES=App.cpp MotorDisplay.cpp SimulationData.cpp SimulationWindow.cpp Simulator.cpp Slider.cpp TogglePanelButton.cpp UsageReporting.cpp
+SOURCES=App.cpp ChipObject.cpp MotorDisplay.cpp NetworkCommunication.cpp SimulationData.cpp SimulationWindow.cpp Simulator.cpp Slider.cpp TogglePanelButton.cpp UsageReporting.cpp
 
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
