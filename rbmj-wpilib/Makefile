@@ -58,9 +58,10 @@ SOURCES=\
     Task.cpp\
     Timer.cpp\
     Ultrasonic.cpp\
-    Utility.cpp\
     Victor.cpp\
     Watchdog.cpp
+
+#Utility.cpp\
 
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
