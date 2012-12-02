@@ -16,8 +16,8 @@ obj/testharness.a:  $(OBJECTS)
 	ar rs $@ $^
 
 obj/App:  Simulator.cpp obj/testharness.a Makefile
-	g++ -DSTANDALONE $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" "$<" $(WX_LDFLAGS) obj/testharness.a
+	g++ -g -DSTANDALONE $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" "$<" $(WX_LDFLAGS) obj/testharness.a
 
 obj/%.o: %.cpp
-	g++ $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" -c "$<"
+	g++ -g $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" -c "$<"
 
