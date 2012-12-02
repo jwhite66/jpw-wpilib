@@ -1,6 +1,7 @@
 #include "taskLib.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 STATUS taskDelay(int ticks)
 {
@@ -17,7 +18,7 @@ STATUS taskSuspend(int tid)
 int taskNameToId (char * name)
 {
     fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return 0;
+    return ERROR;
 }
 
 int taskSpawn(char *name, int priority, int options,
@@ -25,8 +26,14 @@ int taskSpawn(char *name, int priority, int options,
               int arg1, int arg2, int arg3, int arg4, int arg5,
               int arg6, int arg7, int arg8, int arg9, int arg10)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    int rc;
+    pthread_t tid;
+    fprintf(stderr, "%s partially implemented; not doing priority, options, or stacksize\n", __FUNCTION__);
+    rc = pthread_create(&tid, NULL, (void* (*)(void*)) entryPt, (void *) arg1);
+    if (rc == 0)
+        return OK;
+    else
+        return ERROR;
 }
 
 STATUS taskDelete(int tid)
