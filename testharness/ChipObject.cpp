@@ -4,6 +4,7 @@
 #include "tAccumulator.h"
 #include "tAI.h"
 #include "tDIO.h"
+#include "DigitalModule.h"
 #include "tInterrupt.h"
 #include "tWatchdog.h"
 #include "tSystem.h"
@@ -33,7 +34,7 @@ namespace nFPGA
                 unsigned int readConfig_ConvertRate(tRioStatusCode *status)  { UN_ZERO }
                 void writeScanList(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 unsigned char readScanList(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
-                unsigned int readLoopTiming(tRioStatusCode *status)  { UN_ZERO }
+                unsigned int readLoopTiming(tRioStatusCode *status) { UN_ZERO }
                 void writeAverageBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 unsigned char readAverageBits(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
                 void writeOversampleBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
@@ -146,7 +147,11 @@ namespace nFPGA
                 unsigned char readI2CConfig_BytesToWrite(tRioStatusCode *status)  { UN_ZERO }
                 unsigned short readI2CConfig_DataToSendHigh(tRioStatusCode *status)  { UN_ZERO }
                 bool readI2CConfig_BitwiseHandshake(tRioStatusCode *status)  { UN_ZERO }
-                unsigned short readLoopTiming(tRioStatusCode *status)  { UN_ZERO }
+                unsigned short readLoopTiming(tRioStatusCode *status)
+                {
+                    fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+                    return kExpectedLoopTiming;
+                }
                 void writePWMConfig(tPWMConfig value, tRioStatusCode *status)  { UN_VOID }
                 void writePWMConfig_Period(unsigned short value, tRioStatusCode *status)  { UN_VOID }
                 void writePWMConfig_MinHigh(unsigned short value, tRioStatusCode *status)  { UN_VOID }
