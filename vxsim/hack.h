@@ -23,5 +23,10 @@ typedef char * INSTR;
 #define NULL 0
 #endif
 
+#define UN_FPRINTF  fprintf(stderr, "%s(%d): %s UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+#define UN_VOID     UN_FPRINTF
+#define UN_NULL     UN_FPRINTF; return NULL;
+#define UN_ERROR    UN_FPRINTF; return ERROR;
+#define UN_ZERO     UN_FPRINTF; return 0;
 
 #endif
