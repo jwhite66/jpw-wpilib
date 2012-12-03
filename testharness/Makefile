@@ -9,8 +9,6 @@ SOURCES=App.cpp CAN.cpp ChipObject.cpp MotorDisplay.cpp NetworkCommunication.cpp
 TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
 
-all: obj/testharness.a
-
 obj/testharness.a:  $(OBJECTS)
 	ar rs $@ $^
 
