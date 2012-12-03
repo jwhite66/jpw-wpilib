@@ -1,8 +1,9 @@
-SRC_DIR=..
-WPI_DIR=.
-HACK_INCLUDES=-isystem $(SRC_DIR)/vxsim -I $(SRC_DIR)/vxsim -include $(SRC_DIR)/vxsim/basetsd.h -include $(SRC_DIR)/vxsim/hack.h
-HACK_CFLAGS=-g -m32 -DDISABLE_STACK_TRACE -DDISABLE_GETPPCTIMESTAMP
-WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication
+all: obj/wpilib.a
+
+EXTRA_CFLAGS=-DDISABLE_STACK_TRACE -DDISABLE_GETPPCTIMESTAMP
+
+TOP_DIR=..
+include ../Make.rules
 
 SOURCES=\
     Accelerometer.cpp\
@@ -68,8 +69,4 @@ TRIM_SOURCES=$(strip $(SOURCES))
 OBJECTS=$(patsubst %.cpp, obj/%.o, $(TRIM_SOURCES))
 
 obj/wpilib.a:  $(OBJECTS)
-	ar r $@ $^
-
-obj/%.o: %.cpp
-	g++ $(WPI_CFLAGS) $(HACK_CFLAGS) $(HACK_INCLUDES) -Wall -o "$@" -c "$<"
-
+	ar rs $@ $^

@@ -1,0 +1,26 @@
+OBJ_DIR=./obj
+WPI_DIR=$(TOP_DIR)/rbmj-wpilib
+VXSIM_DIR=$(TOP_DIR)/vxsim
+TESTHARNESS_DIR=$(TOP_DIR)/testharness
+WX_CFLAGS=`wx-config --cxxflags`
+WX_LDFLAGS=`wx-config --libs`
+VXSIM_INCLUDES=-isystem $(VXSIM_DIR) -I $(VXSIM_DIR)
+HACK_INCLUDES=-include $(VXSIM_DIR)/basetsd.h -include $(VXSIM_DIR)/hack.h
+WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication -I $(WPI_DIR)/ChipObject -I $(WPI_DIR)/CAN
+WPILIB=$(WPI_DIR)/obj/wpilib.a
+VXSIMLIB=$(VXSIM_DIR)/obj/vxsim.a
+TESTHARNESSLIB=$(TESTHARNESS_DIR)/obj/testharness.a
+
+CFLAGS=-g -m32 -Wall
+
+.PHONY: subdirs $(SUBDIRS)
+subdirs: $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C "$@" $(MAKECMDGOALS)
+
+.PHONY: clean
+clean: subdirs
+	rm -f obj/*
+
+obj/%.o: %.cpp
+	g++ $(CFLAGS) $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) $(VXSIM_INCLUDES) $(EXTRA_CFLAGS) -o "$@" -c "$<"
