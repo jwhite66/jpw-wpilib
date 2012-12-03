@@ -1,4 +1,4 @@
-all: obj/testharness.a
+all: obj/testharness.a obj/App
 
 TOP_DIR=..
 include ../Make.rules
@@ -14,5 +14,5 @@ all: obj/testharness.a
 obj/testharness.a:  $(OBJECTS)
 	ar rs $@ $^
 
-obj/App:  Simulator.cpp obj/testharness.a Makefile
-	g++ -g -m32 -DSTANDALONE $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) -I . -Wall -o "$@" "$<" $(WX_LDFLAGS) obj/testharness.a
+obj/App:  $(SOURCES)
+	g++ $(CFLAGS) -DSTANDALONE $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) $(VXSIM_INCLUDES) $(EXTRA_CFLAGS) -o "$@" $^ $(WX_LDFLAGS)
