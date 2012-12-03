@@ -30,6 +30,7 @@
 
 #include <RobotBase.h>
 extern RobotBase * FRC_userClassFactory();
+extern void PacketReady(void);
 
 #include <vector>
 using namespace std;
@@ -74,7 +75,7 @@ void Simulator::SimulateStep(double tm)
 		// transfer the data back and forth as needed
 		m_controlInterface->simulationData.Transfer();
 
-		// JPW hack out PacketReady();
+		PacketReady();
 	
 		// todo: physics calculations and such
 		
@@ -94,10 +95,11 @@ void Simulator::SimulateStep(double tm)
 	// finally, run the control systems code
 	
 	// notifiers first
-        /* JPW HACK 
 	for (size_t i = 0; i < m_notifiers.size(); i++)
+            fprintf(stderr, "JPW TryEvent %d, time %g\n", i, m_time);
+            /* JPW hack for now 
 		m_notifiers[i]->TryEvent(m_time);
-        */
+            */
 
 	// note: returning from this function gives control to the control loop
 }
