@@ -45,53 +45,31 @@ IMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
-	// initialize XRC
-	wxXmlResource::Get()->InitAllHandlers();
-    
+    // initialize XRC
+    wxXmlResource::Get()->InitAllHandlers();
 
-	// try and find the silly xrc file
-	wxFileName file(wxGetCwd(), wxT("WPILibTestHarness.xrc"));
+    // try and find the silly xrc file
+    wxFileName file(wxGetCwd(), wxT("testharness.xrc"));
 
-if (! file.IsFileReadable())
-{
-    fprintf(stderr, "Cannot read %s(%s)\n", file.GetFullPath().c_str());
-}
+    if (!file.IsFileReadable() ||
+            !wxXmlResource::Get()->Load(file.GetFullPath()))
+    {
+        // try going into testharness directory
+        file.AppendDir(wxT("testharness"));
 
-if (! wxXmlResource::Get()->Load(file.GetFullPath()))
-{
-    fprintf(stderr, "Cannot load XML for %s\n", file.GetFullPath().c_str());
-}
+        if (!file.IsFileReadable() ||
+                !wxXmlResource::Get()->Load(file.GetFullPath()))
+        {
+            wxMessageBox(wxT("testharness.xrc was not found! This file must be in the current working directory or this program cannot execute!"), wxT("Error finding XRC file"));
+            return false;
+        }
+    }
 
-	if (!file.IsFileReadable() || 
-		!wxXmlResource::Get()->Load(file.GetFullPath()))
-	{
+    // create the window
+    SimulationWindow * simulationWindow = new SimulationWindow(NULL);
+    simulationWindow->Show();
 
-	// try going up
-	file.AppendDir(wxT("WPILibTestHarness"));
-
-	if (!file.IsFileReadable() || 
-		!wxXmlResource::Get()->Load(file.GetFullPath()))
-	{
-
-	// try going back a dir
-	file.RemoveLastDir();
-	file.RemoveLastDir();
-	file.AppendDir(wxT("WPILibTestHarness"));
-
-	if (!file.IsFileReadable() || 
-		!wxXmlResource::Get()->Load(file.GetFullPath()))
-	{		
-		wxMessageBox(wxT("WPILibTestHarness.xrc was not found! This file must be in the current working directory or this program cannot execute!"), wxT("Error finding XRC file"));
-		return false;
-	}
-	}
-	}
-
-	// create the window
-	SimulationWindow * simulationWindow = new SimulationWindow(NULL);
-	simulationWindow->Show();
-
-	return true;
+    return true;
 }
 
 void MyApp::OnClose(wxCloseEvent &event)
