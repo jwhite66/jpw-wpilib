@@ -184,7 +184,7 @@ void RobotBase::startRobotTask(FUNCPTR factory)
 	// This is done to ensure that the C++ robot task is spawned with the floating point
 	// context save parameter.
 	Task *task = new Task("RobotTask", (FUNCPTR)RobotBase::robotTask, Task::kDefaultPriority, 64000);
-	task->Start((INT32)factory, (INT32)task);
+	task->Start((void *) factory, (void *)task);
 }
 
 /**

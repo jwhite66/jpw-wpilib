@@ -43,7 +43,7 @@ Preferences::Preferences() :
 	m_tableLock = semMCreate(SEM_Q_PRIORITY | SEM_INVERSION_SAFE | SEM_DELETE_SAFE);
 
 	Synchronized sync(m_fileLock);
-	m_readTask.Start((UINT32)this);
+	m_readTask.Start((void *)this);
 	semTake(m_fileOpStarted, WAIT_FOREVER);
 
 	NetworkTable::GetTable(kTableName)->PutBoolean(kSaveField, false);
@@ -329,7 +329,7 @@ void Preferences::PutLong(const char *key, INT64 value)
 void Preferences::Save()
 {
 	Synchronized sync(m_fileLock);
-	m_writeTask.Start((UINT32)this);
+	m_writeTask.Start((void *)this);
 	semTake(m_fileOpStarted, WAIT_FOREVER);
 }
 

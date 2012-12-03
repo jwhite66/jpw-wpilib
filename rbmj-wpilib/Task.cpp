@@ -49,8 +49,8 @@ Task::~Task()
  * Starts this task.
  * If it is already running or unable to start, it fails and returns false.
  */
-bool Task::Start(UINT32 arg0, UINT32 arg1, UINT32 arg2, UINT32 arg3, UINT32 arg4, 
-		UINT32 arg5, UINT32 arg6, UINT32 arg7, UINT32 arg8, UINT32 arg9)
+bool Task::Start(void * arg0, void * arg1, void * arg2, void * arg3, void * arg4, 
+		void * arg5, void * arg6, void * arg7, void * arg8, void * arg9)
 {
 	m_taskID = taskSpawn(m_taskName,
 						m_priority,

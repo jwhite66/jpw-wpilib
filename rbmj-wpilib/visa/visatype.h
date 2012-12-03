@@ -13,7 +13,7 @@
 #ifndef __VISATYPE_HEADER__
 #define __VISATYPE_HEADER__
 
-#if defined(_WIN64)
+#if defined(_WIN64) && ! defined(__GNUC__)
 #define _VI_FAR
 #define _VI_FUNC            __fastcall
 #define _VI_FUNCC           __fastcall

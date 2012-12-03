@@ -11,8 +11,8 @@ STATUS taskSuspend(int tid);
 int taskNameToId (char * name);
 int taskSpawn(char *name, int priority, int options,
               int stackSize, FUNCPTR entryPt,
-              int arg1, int arg2, int arg3, int arg4, int arg5,
-              int arg6, int arg7, int arg8, int arg9, int arg10);
+              void * arg1, void * arg2, void * arg3, void * arg4, void * arg5,
+              void * arg6, void * arg7, void * arg8, void * arg9, void * arg10);
 STATUS taskDelete(int tid);
 STATUS taskResume(int tid);
 STATUS taskRestart(int tid);

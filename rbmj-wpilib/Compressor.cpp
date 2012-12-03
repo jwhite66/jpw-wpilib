@@ -53,7 +53,7 @@ void Compressor::InitCompressor(UINT8 pressureSwitchModuleNumber,
 
 	nUsageReporting::report(nUsageReporting::kResourceType_Compressor, 0);
 
-	if (!m_task.Start((INT32)this))
+	if (!m_task.Start((void *)this))
 	{
 		wpi_setWPIError(CompressorTaskError);
 	}

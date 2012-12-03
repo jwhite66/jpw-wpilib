@@ -87,7 +87,7 @@ DriverStation::DriverStation()
 
 	AddToSingletonList();
 
-	if (!m_task.Start((INT32)this))
+	if (!m_task.Start((void *)this))
 	{
 		wpi_setWPIError(DriverStationTaskError);
 	}

@@ -11,7 +11,7 @@ WPILIB=$(WPI_DIR)/obj/wpilib.a
 VXSIMLIB=$(VXSIM_DIR)/obj/vxsim.a
 TESTHARNESSLIB=$(TESTHARNESS_DIR)/obj/testharness.a
 
-CFLAGS=-g -m32 -Wall
+CFLAGS=-g -Wall
 
 .PHONY: subdirs $(SUBDIRS)
 subdirs: $(SUBDIRS)

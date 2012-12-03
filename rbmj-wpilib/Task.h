@@ -23,8 +23,8 @@ public:
 	Task(const char* name, FUNCPTR function, INT32 priority = kDefaultPriority, UINT32 stackSize = 20000);
 	virtual ~Task();
 
-	bool Start(UINT32 arg0 = 0, UINT32 arg1 = 0, UINT32 arg2 = 0, UINT32 arg3 = 0, UINT32 arg4 = 0, 
-			UINT32 arg5 = 0, UINT32 arg6 = 0, UINT32 arg7 = 0, UINT32 arg8 = 0, UINT32 arg9 = 0);
+	bool Start(void *arg0 = 0, void * arg1 = 0, void * arg2 = 0, void * arg3 = 0, void * arg4 = 0, 
+			void * arg5 = 0, void * arg6 = 0, void * arg7 = 0, void * arg8 = 0, void * arg9 = 0);
 	bool Restart();
 	bool Stop();
 
