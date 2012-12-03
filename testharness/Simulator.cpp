@@ -60,6 +60,10 @@ void Simulator::StartSimulation(ControlInterface * controlInterface)
 	// begin the simulation by calling into the user's code
 	RobotBase::startRobotTask((FUNCPTR) FRC_userClassFactory);
 #endif
+
+        // Run a loop
+        while (! controlInterface->exit_now)
+            Simulator::m_instance->SimulateStep(0.0);
 	
 	// and then delete self when done
 	delete Simulator::m_instance;
