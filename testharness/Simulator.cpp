@@ -79,7 +79,9 @@ void Simulator::SimulateStep(double tm)
 		// transfer the data back and forth as needed
 		m_controlInterface->simulationData.Transfer();
 
+#if ! defined(STANDALONE)
 		PacketReady();
+#endif
 	
 		// todo: physics calculations and such
 		
