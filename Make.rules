@@ -22,5 +22,11 @@ $(SUBDIRS):
 clean: subdirs
 	rm -f obj/*
 
+.PHONY: depend
+depend: subdirs
+	makedepend -Y -pobj/ $(WPI_CFLAGS) -I $(VXSIM_DIR) $(EXTRA_CFLAGS) $(SOURCES)
+
 obj/%.o: %.cpp
 	g++ $(CFLAGS) $(WX_CFLAGS) $(WPI_CFLAGS) $(HACK_INCLUDES) $(VXSIM_INCLUDES) $(EXTRA_CFLAGS) -o "$@" -c "$<"
+
+
