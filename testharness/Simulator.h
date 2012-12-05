@@ -45,6 +45,10 @@ public:
 		return Simulator::m_instance;
 	}
 	
+	ControlInterface * GetControlInterface()
+	{
+		return m_controlInterface;
+	}
 	/// \name API For Simulation data
 	/// @{
 	
