@@ -96,10 +96,11 @@ struct DigitalIOData {
 
 struct PWMData {
 	PWM * pwm;
+	bool enabled;
 	float speed;
 	
 	PWMData() : 
-		pwm(NULL), speed(0.0)
+		pwm(NULL), speed(0.0), enabled(false)
 	{}
 	
 	// only called by the simulation

@@ -9,6 +9,10 @@
 #include "tWatchdog.h"
 #include "tSystem.h"
 #include "tInterruptManager.h"
+#include "SimulationData.h"
+#include "Simulator.h"
+#include "ControlInterface.h"
+#include "PWM.h"
 
 namespace nFPGA
 {
@@ -70,7 +74,7 @@ namespace nFPGA
             public:
                 ~DIOImpl() { UN_VOID }
                 tSystemInterface* getSystemInterface()  { UN_NULL }
-                unsigned char getSystemIndex()  { UN_ZERO }
+                unsigned char getSystemIndex()  { return m_index; }
                 void writeI2CDataToSend(unsigned int value, tRioStatusCode *status)  { UN_VOID }
                 unsigned int readI2CDataToSend(tRioStatusCode *status)  { UN_ZERO }
                 void writeDO(unsigned short value, tRioStatusCode *status)  { UN_VOID }
@@ -162,10 +166,29 @@ namespace nFPGA
                 }
                 unsigned short readPWMConfig_Period(tRioStatusCode *status)  { UN_ZERO }
                 unsigned short readPWMConfig_MinHigh(tRioStatusCode *status)  { UN_ZERO }
-                void writePWMValue(unsigned char reg_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writePWMValue(unsigned char reg_index, unsigned char value, tRioStatusCode *status)
+                {
+                    ControlInterface *ctl = (Simulator::GetInstance())->GetControlInterface();
+                    DigitalModuleData *d = &(ctl->simulationData.digitalModule[m_index]);
+                    PWMData *p = &d->pwm[reg_index];
+                    p->speed = value;
+                    p->enabled = true;
+                }
                 unsigned char readPWMValue(unsigned char reg_index, tRioStatusCode *status)  { UN_ZERO }
 
+                void create_impl(unsigned char sys_index, tRioStatusCode *status)
+                {
+                    m_index = sys_index;
+                    if (sys_index == 0)
+                        m_slot = DIGITAL_SLOT_1;
+                    if (sys_index == 1)
+                        m_slot = DIGITAL_SLOT_2;
+                }
+
             protected:
+                unsigned char m_index;
+                int m_slot;
+
                 tI2CStatus m_i2cstatus;
                 tSlowValue m_slowvalue;
                 tDO_PWMConfig m_dopwmconfig;
@@ -175,8 +198,10 @@ namespace nFPGA
 
         tDIO* tDIO::create (unsigned char sys_index, tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
-            return new DIOImpl;
+            DIOImpl *p = new DIOImpl;
+            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED, index %d\n", __FILE__, __LINE__, __FUNCTION__, sys_index);
+            p->create_impl(sys_index, status);
+            return p;
         }
 
         tInterrupt* tInterrupt::create (unsigned char sys_index, tRioStatusCode *status) { UN_NULL }

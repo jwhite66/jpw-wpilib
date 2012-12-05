@@ -517,8 +517,8 @@ void SimulationWindow::OnDrawTimer(wxTimerEvent &event)
 		// pwm
 		for (size_t i = 0; i < DIGITAL_PWM_CHANNELS; i++)
 		{
-			m_slot1PWM[i]->SetEnabled( mod.pwm[i].pwm != NULL );
-			m_slot1PWM[i]->SetValue( mod.pwm[i].speed );
+			m_slot1PWM[i]->SetEnabled( mod.pwm[i].enabled );
+			m_slot1PWM[i]->SetValue( (mod.pwm[i].speed - 128.0) / 128.0 );
 		}
 
 		// digital io
@@ -561,7 +561,7 @@ void SimulationWindow::OnDrawTimer(wxTimerEvent &event)
 		// pwm
 		for (size_t i = 0; i < DIGITAL_PWM_CHANNELS; i++)
 		{
-			m_slot2PWM[i]->SetEnabled( mod.pwm[i].pwm != NULL );
+			m_slot2PWM[i]->SetEnabled( mod.pwm[i].enabled );
 			m_slot2PWM[i]->SetValue( mod.pwm[i].speed );
 		}
 
