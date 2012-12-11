@@ -55,7 +55,7 @@ struct EncoderInfo {
 	int count;
 	
 	EncoderInfo(Encoder * e, UINT32 sa, UINT32 ca, UINT32 sb, UINT32 cb) :
-		encoder(e), slota(sa), channela(ca), slotb(sb), channelb(cb), count(0)
+		encoder(e), slota(sa), slotb(sb), channela(ca), channelb(cb), count(0)
 	{}
 	
 	void Transfer();
@@ -100,7 +100,7 @@ struct PWMData {
 	float speed;
 	
 	PWMData() : 
-		pwm(NULL), speed(0.0), enabled(false)
+		pwm(NULL), enabled(false), speed(0.0)
 	{}
 	
 	// only called by the simulation
