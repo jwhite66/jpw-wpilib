@@ -9,7 +9,8 @@ HACK_INCLUDES=-include $(VXSIM_DIR)/basetsd.h -include $(VXSIM_DIR)/hack.h
 WPI_CFLAGS=-I $(WPI_DIR) -I $(WPI_DIR)/NetworkCommunication -I $(WPI_DIR)/ChipObject -I $(WPI_DIR)/CAN
 WPILIB=$(WPI_DIR)/obj/wpilib.a
 VXSIMLIB=$(VXSIM_DIR)/obj/vxsim.a
-TESTHARNESSLIB=$(TESTHARNESS_DIR)/obj/testharness.a
+GUITESTLIB=$(TESTHARNESS_DIR)/obj/testgui.a
+CONSOLETESTLIB=$(TESTHARNESS_DIR)/obj/testconsole.a
 
 CFLAGS=-g -Wall
 

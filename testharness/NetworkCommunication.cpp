@@ -3,13 +3,18 @@
 #include "LoadOut.h"
 #include <stdio.h>
 #include "symModuleLink.h"
+#include "Simulator.h"
 
 SEM_ID g_data_sem = 0;
 
 UINT32 FRC_NetworkCommunication_nAICalibration_getLSBWeight(const UINT32 aiSystemIndex, const UINT32 channel, INT32 *status) { UN_ZERO }
 INT32 FRC_NetworkCommunication_nAICalibration_getOffset(const UINT32 aiSystemIndex, const UINT32 channel, INT32 *status) { UN_ZERO }
-int getCommonControlData(FRCCommonControlData *data, int wait_ms) { UN_ERROR }
-int getDynamicControlData(UINT8 type, char *dynamicData, INT32 maxLength, int wait_ms) { UN_ERROR }
+int getCommonControlData(FRCCommonControlData *data, int wait_ms)
+{
+    *data = * (global_simulator.GetControlData());
+    return OK;
+}
+int getDynamicControlData(UINT8 type, char *dynamicData, INT32 maxLength, int wait_ms){ UN_ERROR }
 int setStatusData(float battery, UINT8 dsDigitalOut, UINT8 updateNumber,
 			const char *userDataHigh, int userDataHighLength,
 			const char *userDataLow, int userDataLowLength, int wait_ms) { UN_ERROR }

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <signal.h>
 #include "NiFpga.h"
 #include "Error.h"
 #include "tAccumulator.h"
@@ -9,9 +10,7 @@
 #include "tWatchdog.h"
 #include "tSystem.h"
 #include "tInterruptManager.h"
-#include "SimulationData.h"
 #include "Simulator.h"
-#include "ControlInterface.h"
 #include "PWM.h"
 
 namespace nFPGA
@@ -65,7 +64,8 @@ namespace nFPGA
 
         tAI* tAI::create (unsigned char sys_index, tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+            fprintf(stderr, "%s(%d): %s tAI %d Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__, sys_index);
+            raise(SIGINT);
             return new AIImpl;
         }
 
@@ -86,7 +86,10 @@ namespace nFPGA
                 void writeOutputEnable(unsigned short value, tRioStatusCode *status)  { UN_VOID }
                 unsigned short readOutputEnable(tRioStatusCode *status)  { UN_ZERO }
                 void writeSlowValue(tSlowValue value, tRioStatusCode *status)  { UN_VOID }
-                void writeSlowValue_RelayFwd(unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writeSlowValue_RelayFwd(unsigned char value, tRioStatusCode *status)
+                {
+                    m_slowvalue.RelayFwd = value;
+                }
                 void writeSlowValue_RelayRev(unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 void writeSlowValue_I2CHeader(unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 tSlowValue readSlowValue(tRioStatusCode *status)
@@ -94,7 +97,11 @@ namespace nFPGA
                     UN_FPRINTF
                     return m_slowvalue;
                 }
-                unsigned char readSlowValue_RelayFwd(tRioStatusCode *status)  { UN_ZERO }
+                unsigned char readSlowValue_RelayFwd(tRioStatusCode *status)
+                {
+                    return (unsigned char) m_slowvalue.RelayFwd;
+                }
+
                 unsigned char readSlowValue_RelayRev(tRioStatusCode *status)  { UN_ZERO }
                 unsigned char readSlowValue_I2CHeader(tRioStatusCode *status)  { UN_ZERO }
                 tI2CStatus readI2CStatus(tRioStatusCode *status)
@@ -107,7 +114,15 @@ namespace nFPGA
                 bool readI2CStatus_Aborted(tRioStatusCode *status)  { UN_ZERO }
                 unsigned int readI2CStatus_DataReceivedHigh(tRioStatusCode *status)  { UN_ZERO }
                 unsigned int readI2CDataReceived(tRioStatusCode *status)  { UN_ZERO }
-                unsigned short readDI(tRioStatusCode *status)  { UN_ZERO }
+                unsigned short readDI(tRioStatusCode *status)
+                {
+                    if (! m_readdi_warned)
+                    {
+                        UN_FPRINTF
+                        m_readdi_warned = true;
+                    }
+                    return 0;
+                }
                 void writePulse(unsigned short value, tRioStatusCode *status)  { UN_VOID }
                 unsigned short readPulse(tRioStatusCode *status)  { UN_ZERO }
                 void writePWMPeriodScale(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
@@ -168,26 +183,33 @@ namespace nFPGA
                 unsigned short readPWMConfig_MinHigh(tRioStatusCode *status)  { UN_ZERO }
                 void writePWMValue(unsigned char reg_index, unsigned char value, tRioStatusCode *status)
                 {
+                    UN_VOID
+#if 0
                     ControlInterface *ctl = (Simulator::GetInstance())->GetControlInterface();
                     DigitalModuleData *d = &(ctl->simulationData.digitalModule[m_index]);
                     PWMData *p = &d->pwm[reg_index];
                     p->speed = value;
                     p->enabled = true;
+#endif
                 }
                 unsigned char readPWMValue(unsigned char reg_index, tRioStatusCode *status)  { UN_ZERO }
 
                 void create_impl(unsigned char sys_index, tRioStatusCode *status)
                 {
+                    UN_VOID
+#if 0
                     m_index = sys_index;
                     if (sys_index == 0)
                         m_slot = DIGITAL_SLOT_1;
                     if (sys_index == 1)
                         m_slot = DIGITAL_SLOT_2;
+#endif
                 }
 
             protected:
                 unsigned char m_index;
                 int m_slot;
+                bool m_readdi_warned = false;
 
                 tI2CStatus m_i2cstatus;
                 tSlowValue m_slowvalue;
