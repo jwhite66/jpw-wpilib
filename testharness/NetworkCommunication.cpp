@@ -25,7 +25,8 @@ int setErrorData(const char *errors, int errorsLength, int wait_ms) { UN_ERROR }
 int overrideIOConfig(const char *ioConfig, int wait_ms) { UN_ERROR }
 void setNewDataSem(SEM_ID s)
 {
-fprintf(stderr, "%s(%d): %s setNewDataSem to %p, JPW\n", __FILE__, __LINE__, __FUNCTION__, s);
+    if (LOG_DEBUG)
+        fprintf(stderr, "%s(%d): %s setNewDataSem to %p, JPW\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, s);
     g_data_sem = s;
 }
 
@@ -41,7 +42,11 @@ void PacketReady(void)
 #endif
 }
 
-void FRC_NetworkCommunication_observeUserProgramStarting(void) { UN_VOID }
+void FRC_NetworkCommunication_observeUserProgramStarting(void)
+{
+    if (LOG_DEBUG)
+        UN_FPRINTF
+}
 void FRC_NetworkCommunication_observeUserProgramDisabled(void) { UN_VOID }
 void FRC_NetworkCommunication_observeUserProgramAutonomous(void) { UN_VOID }
 void FRC_NetworkCommunication_observeUserProgramTeleop(void) { UN_VOID }
@@ -49,7 +54,8 @@ STATUS moduleNameFindBySymbolName(const char * symbol,char *module) { UN_ERROR }
 
 bool nLoadOut::getModulePresence(tModuleType moduleType, UINT8 moduleNumber)
 {
-    fprintf(stderr, "%s Mostly UNIMPLEMENTED\n", __FUNCTION__);
+    if (LOG_DEBUG)
+        fprintf(stderr, "%s Mostly UNIMPLEMENTED\n", __PRETTY_FUNCTION__);
     return TRUE;
 }
 

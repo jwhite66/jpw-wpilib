@@ -25,11 +25,13 @@
 #include <vector>
 #include <vxWorks.h>
 
+#include "SimulatorUI.h"
+
 /// provided to decouple the GUI related code from the simulation code
 class Simulator
 {
 public:
-        void Init(void);
+        void Init(SimulatorUI *ui);
         void Run(void);
         void Step(void);
         void Exit(void);
@@ -38,6 +40,7 @@ public:
 
 private:
         bool exit_now;
+        SimulatorUI *m_ui;
 
         // driver station data going to the simulation
         FRCCommonControlData controlData;

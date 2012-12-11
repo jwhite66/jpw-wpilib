@@ -2,12 +2,11 @@
 
 extern "C" int imaqGetLastError(void)
 {
-    fprintf(stderr, "%s(%d): %s UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
-    return 0;
+    UN_ZERO
 }
 
 extern "C" char *imaqGetErrorText(int errorCode)
 {
-    fprintf(stderr, "%s(%d): %s UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+    UN_FPRINTF
     return (char *) "imaqGetErrorText UNIMPLEMENTED";
 }

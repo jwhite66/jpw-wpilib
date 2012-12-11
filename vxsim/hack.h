@@ -3,6 +3,9 @@
 #if ! defined(_HACK_H_INCLUDED)
 #define _HACK_H_INCLUDED
 
+#include <stdlib.h>
+#include <string.h>
+
 //typedef void (*FUNCPTR)(void*);
 typedef void * (*FUNCPTR)();
 
@@ -23,7 +26,11 @@ typedef char * INSTR;
 #define NULL 0
 #endif
 
-#define UN_FPRINTF  fprintf(stderr, "%s(%d): %s UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+#define LOG_DEBUG (getenv("WPILOG") && (strstr(getenv("WPILOG"), "debug")             ))
+#define LOG_WARN  (getenv("WPILOG") && (strstr(getenv("WPILOG"), "warn")  || LOG_DEBUG))
+#define LOG_INFO  (getenv("WPILOG") && (strstr(getenv("WPILOG"), "info")  || LOG_WARN))
+
+#define UN_FPRINTF  fprintf(stderr, "%s(%d): %s UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
 #define UN_VOID     UN_FPRINTF
 #define UN_NULL     UN_FPRINTF; return NULL;
 #define UN_ERROR    UN_FPRINTF; return ERROR;

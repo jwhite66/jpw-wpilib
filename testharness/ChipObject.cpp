@@ -64,14 +64,14 @@ namespace nFPGA
 
         tAI* tAI::create (unsigned char sys_index, tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s tAI %d Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__, sys_index);
-            raise(SIGINT);
+            fprintf(stderr, "%s(%d): %s tAI %d Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
             return new AIImpl;
         }
 
         class DIOImpl : public tDIO
         {
             public:
+                DIOImpl() : m_readdi_warned(false) {};
                 ~DIOImpl() { UN_VOID }
                 tSystemInterface* getSystemInterface()  { UN_NULL }
                 unsigned char getSystemIndex()  { return m_index; }
@@ -168,7 +168,7 @@ namespace nFPGA
                 bool readI2CConfig_BitwiseHandshake(tRioStatusCode *status)  { UN_ZERO }
                 unsigned short readLoopTiming(tRioStatusCode *status)
                 {
-                    fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+                    fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
                     return kExpectedLoopTiming;
                 }
                 void writePWMConfig(tPWMConfig value, tRioStatusCode *status)  { UN_VOID }
@@ -209,7 +209,7 @@ namespace nFPGA
             protected:
                 unsigned char m_index;
                 int m_slot;
-                bool m_readdi_warned = false;
+                bool m_readdi_warned;
 
                 tI2CStatus m_i2cstatus;
                 tSlowValue m_slowvalue;
@@ -221,7 +221,7 @@ namespace nFPGA
         tDIO* tDIO::create (unsigned char sys_index, tRioStatusCode *status)
         {
             DIOImpl *p = new DIOImpl;
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED, index %d\n", __FILE__, __LINE__, __FUNCTION__, sys_index);
+            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED, index %d\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
             p->create_impl(sys_index, status);
             return p;
         }
@@ -251,7 +251,7 @@ namespace nFPGA
 
         tWatchdog* tWatchdog::create(tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __FUNCTION__);
+            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
             return new WatchDogImpl;
         }
     }

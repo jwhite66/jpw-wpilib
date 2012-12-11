@@ -4,6 +4,18 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <time.h>
+#include <string>
+#include <vector>
+
+struct task_info
+{
+    std::string name;
+    pthread_t tid;
+    unsigned int id;
+};
+
+std::vector <struct task_info> g_tasks;
+int g_highest_id = 0;
 
 STATUS taskDelay(int ticks)
 {
@@ -23,13 +35,18 @@ STATUS taskDelay(int ticks)
 
 STATUS taskSuspend(int tid)
 {
-    abort();
-    return ERROR;
+    UN_ERROR
 }
 
 int taskNameToId (char * name)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
+    std::vector <struct task_info>::const_iterator ti;
+    for (ti = g_tasks.begin(); ti != g_tasks.end(); ti++)
+        if (ti->name == name)
+        {
+            return ti->id;
+        }
+
     return ERROR;
 }
 
@@ -40,60 +57,64 @@ int taskSpawn(char *name, int priority, int options,
 {
     int rc;
     pthread_t tid;
-    fprintf(stderr, "%s partially implemented; not doing priority, options, or stacksize\n", __FUNCTION__);
+    struct task_info task;
+
+    if (LOG_DEBUG)
+        fprintf(stderr, "%s partially implemented; not doing priority, options, or stacksize\n", __PRETTY_FUNCTION__);
     rc = pthread_create(&tid, NULL, (void* (*)(void*)) entryPt, (void *) arg1);
     if (rc == 0)
+    {
+        task.name = name;
+        task.tid = tid;
+        task.id = ++g_highest_id;
+        g_tasks.push_back(task);
+
+        if (LOG_INFO)
+            fprintf(stderr, "spawned task %s, pthread tid %lu as id %d\n", name, tid, task.id);
         return OK;
+    }
     else
         return ERROR;
 }
 
 STATUS taskDelete(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 STATUS taskResume(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 STATUS taskRestart(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 STATUS taskPrioritySet(int tid, int newPriority)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 STATUS taskPriorityGet(int tid, int *pPriority)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 BOOL taskIsReady(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return FALSE;
+    UN_ZERO
 }
 
 BOOL taskIsSuspended(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return FALSE;
+    UN_ZERO
 }
 
 STATUS taskIdVerify(int tid)
 {
-    fprintf(stderr, "%s not implemented\n", __FUNCTION__);
-    return ERROR;
+    UN_ERROR
 }
 
 

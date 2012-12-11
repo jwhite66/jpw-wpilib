@@ -33,8 +33,9 @@ extern void PacketReady(void);
 #include <vector>
 using namespace std;
 
-void Simulator::Init(void)
+void Simulator::Init(SimulatorUI *ui)
 {
+    m_ui = ui;
     FRC_UserProgram_StartupLibraryInit();
 }
 
