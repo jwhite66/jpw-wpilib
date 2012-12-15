@@ -42,18 +42,20 @@ void Simulator::Init(SimulatorUI *ui)
 // does not return until simulation is complete
 void Simulator::Run(void)
 {
+    stop_now = false;
     // Run a loop
-    while (!exit_now)
+    while (!stop_now)
         Step();
 }
 
 void Simulator::Step()
 {
+    semGive(m_data_sem);
 }
 
-void Simulator::Exit()
+void Simulator::Stop()
 {
-    exit_now = true;
+    stop_now = true;
 }
 
 Simulator global_simulator;

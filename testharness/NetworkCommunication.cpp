@@ -5,8 +5,6 @@
 #include "symModuleLink.h"
 #include "Simulator.h"
 
-SEM_ID g_data_sem = 0;
-
 UINT32 FRC_NetworkCommunication_nAICalibration_getLSBWeight(const UINT32 aiSystemIndex, const UINT32 channel, INT32 *status) { UN_ZERO }
 INT32 FRC_NetworkCommunication_nAICalibration_getOffset(const UINT32 aiSystemIndex, const UINT32 channel, INT32 *status) { UN_ZERO }
 int getCommonControlData(FRCCommonControlData *data, int wait_ms)
@@ -27,19 +25,7 @@ void setNewDataSem(SEM_ID s)
 {
     if (LOG_DEBUG)
         fprintf(stderr, "%s(%d): %s setNewDataSem to %p, JPW\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, s);
-    g_data_sem = s;
-}
-
-void PacketReady(void)
-{
-#if ! defined(STANDALONE)
-    if (g_data_sem != 0)
-    {
-        fprintf(stderr, "PacketReady() sem rc %d\n", semGive(g_data_sem));
-    }
-    else
-        fprintf(stderr, "JPW Um... global semaphore ain't right...\n");
-#endif
+    global_simulator.setNewDataSem(s);
 }
 
 void FRC_NetworkCommunication_observeUserProgramStarting(void)

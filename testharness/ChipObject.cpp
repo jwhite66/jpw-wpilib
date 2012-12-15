@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <signal.h>
+#include <vector>
+#include <sys/time.h>
 #include "NiFpga.h"
 #include "Error.h"
 #include "tAccumulator.h"
@@ -13,6 +15,19 @@
 #include "Simulator.h"
 #include "PWM.h"
 
+struct analog_info
+{
+    unsigned char scanlist_value;
+    unsigned char average_bits;
+    unsigned char oversample_bits;
+};
+
+struct pwm_info
+{
+    unsigned char value;
+    unsigned char period_scale;
+};
+
 namespace nFPGA
 {
     namespace nFRC_2012_1_6_4
@@ -25,7 +40,10 @@ namespace nFPGA
                 ~AIImpl(){ UN_VOID }
                 tSystemInterface* getSystemInterface()  { UN_NULL }
                 unsigned char getSystemIndex()  { UN_ZERO }
-                void writeConfig(tConfig value, tRioStatusCode *status)  { UN_VOID }
+                void writeConfig(tConfig value, tRioStatusCode *status)
+                {
+                    m_config = value;
+                }
                 void writeConfig_ScanSize(unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 void writeConfig_ConvertRate(unsigned int value, tRioStatusCode *status)  { UN_VOID }
                 tConfig readConfig(tRioStatusCode *status)
@@ -35,12 +53,21 @@ namespace nFPGA
                 }
                 unsigned char readConfig_ScanSize(tRioStatusCode *status)  { UN_ZERO }
                 unsigned int readConfig_ConvertRate(tRioStatusCode *status)  { UN_ZERO }
-                void writeScanList(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writeScanList(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)
+                {
+                    bitfields[bitfield_index].scanlist_value = value;
+                }
                 unsigned char readScanList(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
                 unsigned int readLoopTiming(tRioStatusCode *status) { UN_ZERO }
-                void writeAverageBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writeAverageBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)
+                {
+                    bitfields[bitfield_index].average_bits = value;
+                }
                 unsigned char readAverageBits(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
-                void writeOversampleBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writeOversampleBits(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)
+                {
+                    bitfields[bitfield_index].oversample_bits = value;
+                }
                 unsigned char readOversampleBits(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
                 signed int readOutput(tRioStatusCode *status)  { UN_ZERO }
                 void writeReadSelect(tReadSelect value, tRioStatusCode *status)  { UN_VOID }
@@ -60,11 +87,14 @@ namespace nFPGA
             protected:
                 tConfig m_config;
                 tReadSelect m_select;
+
+                struct analog_info bitfields[8];
         };
 
         tAI* tAI::create (unsigned char sys_index, tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s tAI %d Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
+            if (LOG_DEBUG)
+                fprintf(stderr, "%s(%d): %s tAI %d Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
             return new AIImpl;
         }
 
@@ -90,7 +120,10 @@ namespace nFPGA
                 {
                     m_slowvalue.RelayFwd = value;
                 }
-                void writeSlowValue_RelayRev(unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writeSlowValue_RelayRev(unsigned char value, tRioStatusCode *status)
+                {
+                    m_slowvalue.RelayRev = value;
+                }
                 void writeSlowValue_I2CHeader(unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 tSlowValue readSlowValue(tRioStatusCode *status)
                 {
@@ -125,7 +158,10 @@ namespace nFPGA
                 }
                 void writePulse(unsigned short value, tRioStatusCode *status)  { UN_VOID }
                 unsigned short readPulse(tRioStatusCode *status)  { UN_ZERO }
-                void writePWMPeriodScale(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
+                void writePWMPeriodScale(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)
+                {
+                    m_pwmdata[bitfield_index].period_scale = value;
+                }
                 unsigned char readPWMPeriodScale(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
                 void writeDO_PWMDutyCycle(unsigned char bitfield_index, unsigned char value, tRioStatusCode *status)  { UN_VOID }
                 unsigned char readDO_PWMDutyCycle(unsigned char bitfield_index, tRioStatusCode *status)  { UN_ZERO }
@@ -168,12 +204,19 @@ namespace nFPGA
                 bool readI2CConfig_BitwiseHandshake(tRioStatusCode *status)  { UN_ZERO }
                 unsigned short readLoopTiming(tRioStatusCode *status)
                 {
-                    fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
+                    if (LOG_DEBUG)
+                        fprintf(stderr, "%s(%d): %s Hard coded / UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
                     return kExpectedLoopTiming;
                 }
-                void writePWMConfig(tPWMConfig value, tRioStatusCode *status)  { UN_VOID }
-                void writePWMConfig_Period(unsigned short value, tRioStatusCode *status)  { UN_VOID }
-                void writePWMConfig_MinHigh(unsigned short value, tRioStatusCode *status)  { UN_VOID }
+                void writePWMConfig(tPWMConfig value, tRioStatusCode *status) { UN_VOID }
+                void writePWMConfig_Period(unsigned short value, tRioStatusCode *status)
+                {
+                    m_pwmconfig.Period = value;
+                }
+                void writePWMConfig_MinHigh(unsigned short value, tRioStatusCode *status)
+                {
+                    m_pwmconfig.MinHigh = value;
+                }
                 tPWMConfig readPWMConfig(tRioStatusCode *status)
                 {
                     UN_FPRINTF
@@ -183,32 +226,18 @@ namespace nFPGA
                 unsigned short readPWMConfig_MinHigh(tRioStatusCode *status)  { UN_ZERO }
                 void writePWMValue(unsigned char reg_index, unsigned char value, tRioStatusCode *status)
                 {
-                    UN_VOID
-#if 0
-                    ControlInterface *ctl = (Simulator::GetInstance())->GetControlInterface();
-                    DigitalModuleData *d = &(ctl->simulationData.digitalModule[m_index]);
-                    PWMData *p = &d->pwm[reg_index];
-                    p->speed = value;
-                    p->enabled = true;
-#endif
+                    m_pwmdata[reg_index].value = value;
+                    // TODO - signal this to the UI
                 }
                 unsigned char readPWMValue(unsigned char reg_index, tRioStatusCode *status)  { UN_ZERO }
 
                 void create_impl(unsigned char sys_index, tRioStatusCode *status)
                 {
-                    UN_VOID
-#if 0
                     m_index = sys_index;
-                    if (sys_index == 0)
-                        m_slot = DIGITAL_SLOT_1;
-                    if (sys_index == 1)
-                        m_slot = DIGITAL_SLOT_2;
-#endif
                 }
 
             protected:
                 unsigned char m_index;
-                int m_slot;
                 bool m_readdi_warned;
 
                 tI2CStatus m_i2cstatus;
@@ -216,12 +245,14 @@ namespace nFPGA
                 tDO_PWMConfig m_dopwmconfig;
                 tI2CConfig m_i2cconfig;
                 tPWMConfig m_pwmconfig;
+                struct pwm_info m_pwmdata[10];
         };
 
         tDIO* tDIO::create (unsigned char sys_index, tRioStatusCode *status)
         {
             DIOImpl *p = new DIOImpl;
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED, index %d\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
+            if (LOG_DEBUG)
+                fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED, index %d\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, sys_index);
             p->create_impl(sys_index, status);
             return p;
         }
@@ -231,27 +262,43 @@ namespace nFPGA
         class WatchDogImpl : public tWatchdog
         {
             public:
+                WatchDogImpl()
+                {
+                    gettimeofday(&m_tv, NULL);
+                }
                tSystemInterface* getSystemInterface() { UN_NULL }
                tStatus readStatus(tRioStatusCode *status) { UN_FPRINTF; return m_status; }
                bool readStatus_SystemActive(tRioStatusCode *status) { UN_ZERO }
                bool readStatus_Alive(tRioStatusCode *status){ UN_ZERO }
                unsigned short readStatus_SysDisableCount(tRioStatusCode *status){ UN_ZERO }
                unsigned short readStatus_DisableCount(tRioStatusCode *status){ UN_ZERO }
-               void writeImmortal(bool value, tRioStatusCode *status){UN_VOID}
+               void writeImmortal(bool value, tRioStatusCode *status)
+               {
+                   m_immortal = value;
+               }
                bool readImmortal(tRioStatusCode *status){ UN_ZERO }
                void strobeKill(tRioStatusCode *status){UN_VOID}
                void strobeFeed(tRioStatusCode *status){UN_VOID}
-               void writeExpiration(unsigned int value, tRioStatusCode *status){UN_VOID}
+               void writeExpiration(unsigned int value, tRioStatusCode *status)
+               {
+                   if (LOG_WARN)
+                       fprintf(stderr, "WatchDog Expiration set, but no mechanism to trigger.\n");
+                   m_expiration = value;
+               }
                unsigned int readExpiration(tRioStatusCode *status){ UN_ZERO }
                unsigned int readTimer(tRioStatusCode *status){ UN_ZERO }
 
             protected:
               tStatus m_status;
+              unsigned int m_expiration;
+              bool m_immortal;
+              struct timeval m_tv;
         };
 
         tWatchdog* tWatchdog::create(tRioStatusCode *status)
         {
-            fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
+            if (LOG_WARN)
+                fprintf(stderr, "%s(%d): %s Mostly UNIMPLEMENTED\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
             return new WatchDogImpl;
         }
     }

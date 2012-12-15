@@ -34,13 +34,16 @@ public:
         void Init(SimulatorUI *ui);
         void Run(void);
         void Step(void);
-        void Exit(void);
+        void Stop(void);
 
         FRCCommonControlData *GetControlData(void) { return &controlData; }
+        void setNewDataSem(SEM_ID s) { m_data_sem = s; }
+
 
 private:
-        bool exit_now;
+        bool stop_now;
         SimulatorUI *m_ui;
+        SEM_ID m_data_sem;
 
         // driver station data going to the simulation
         FRCCommonControlData controlData;
