@@ -50,6 +50,17 @@ int taskNameToId (char * name)
     return ERROR;
 }
 
+typedef void * (*vx_entry)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+void *pthread_to_vx_entry_gateway(void *p)
+{
+    void **args = (void **) p;
+    void *ret;
+    vx_entry f = (vx_entry) args[0];
+    ret = (*f)(args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+    free(p);
+    return ret;
+}
+
 int taskSpawn(char *name, int priority, int options,
               int stackSize, FUNCPTR entryPt,
               void * arg1, void * arg2, void * arg3, void * arg4, void * arg5,
@@ -58,10 +69,24 @@ int taskSpawn(char *name, int priority, int options,
     int rc;
     pthread_t tid;
     struct task_info task;
+    void **args;
+
+    args = (void **) malloc(11 * sizeof(*args));
+    args[0] = (void *) entryPt;
+    args[1] = arg1;
+    args[2] = arg2;
+    args[3] = arg3;
+    args[4] = arg4;
+    args[5] = arg5;
+    args[6] = arg6;
+    args[7] = arg7;
+    args[8] = arg8;
+    args[9] = arg9;
+    args[10] = arg10;
 
     if (LOG_DEBUG)
         fprintf(stderr, "%s partially implemented; not doing priority, options, or stacksize\n", __PRETTY_FUNCTION__);
-    rc = pthread_create(&tid, NULL, (void* (*)(void*)) entryPt, (void *) arg1);
+    rc = pthread_create(&tid, NULL, &pthread_to_vx_entry_gateway, (void *) args);
     if (rc == 0)
     {
         task.name = name;
